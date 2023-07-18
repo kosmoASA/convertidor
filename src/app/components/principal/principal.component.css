@@ -1,0 +1,28 @@
+.main_div {
+    display: grid;
+    grid-template-columns: auto 600px auto;
+    grid-template-rows: 100px 200px auto;
+}
+
+.div_dialog {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: grid;
+    place-content: center;
+}
+
+.div_card{
+    grid-column: 2/3;
+    grid-row: 3/4;
+    display: grid;
+    place-content: center;
+    margin: 10px;
+}
+
+button {
+    font-size: 18px;
+}
+
+p {
+    font-size: 40px;
+}
