@@ -9,6 +9,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class PrincipalComponent {
 
+  number: string = '';
 
   constructor(public dialog: MatDialog) {}
 
@@ -17,8 +18,8 @@ export class PrincipalComponent {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe((num:string) => {
+      this.number = num;
     });
   }
 

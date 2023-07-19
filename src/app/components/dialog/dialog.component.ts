@@ -1,5 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Main } from 'src/app/interfaces/main';
 
 
@@ -9,45 +10,72 @@ import { Main } from 'src/app/interfaces/main';
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent {
+export class DialogComponent implements AfterViewInit{
 
   form: FormGroup;
-  value = '';
 
-  // @ViewChild('number') number!: ElementRef;
+  @ViewChild('optionInput') optionInput!: ElementRef;
 
-  optionsToSelect: Main[] = [
+  optionsToSelectMiles: Main[] = [
     {value: 'punto', viewValue: 'Punto ( . )'},
     {value: 'coma', viewValue: 'Coma ( , )'},
   ];
 
-  constructor ( private fb: FormBuilder )
+  optionsToSelectDecimal: Main[] = [
+    {value: 'punto', viewValue: 'Punto ( . )'},
+    {value: 'coma', viewValue: 'Coma ( , )'},
+  ];
+
+  constructor ( private fb: FormBuilder,
+                private dialogRef: MatDialogRef<DialogComponent>,
+                private renderer: Renderer2 )
   {
     this.form = this.fb.group({
       optionSelected: [''],
       number: [''],
-      options: this.optionSelected,
+      optionsMiles: this.optionSelectedMiles,
+      optionsDecimal: this.optionSelectedDecimal,
+
     })
+
+
 
   }
 
-  optionSelected = new FormControl(this.optionsToSelect[0].value);
+  optionSelectedMiles = new FormControl(this.optionsToSelectMiles[0].value);
+  optionSelectedDecimal = new FormControl(this.optionsToSelectDecimal[0].value);
 
+  ngAfterViewInit() {
+    
+    
+  }
+
+  disabledOption(event : any) {
+    
+    if(event.value === this.form.controls['optionsMiles'].value){
+    
+      const option = this.optionInput.nativeElement;
+      this.renderer.setStyle(option, 'display', "none")
+    } 
+
+  }
+
+  
 
   modifyNumber(event: any) {
-
-    const numberNow = event.target.value;
-    let dato = this.optionSelected.value;
+    let datoMiles = this.optionSelectedMiles.value
+    let datoDecimal = this.optionSelectedDecimal.value;
     let number = this.form.get('number')?.value;
 
+    console.log( datoMiles )
 
-    if( dato === 'coma') {
+    if( datoMiles === 'coma' ) {
       number = this.agregarSeparadorComa(number);
       
       console.log( number )
     }
 
-    if( dato === 'punto') {
+    if( datoMiles === 'punto'  ) {
       number = this.agregarSeparadorPunto(number)
       console.log( number )
     }
@@ -57,7 +85,10 @@ export class DialogComponent {
   }
 
   submitModal() {
-    
+    if(this.form.invalid) return;
+
+    const num = this.form.value.number;
+    this.dialogRef.close(num)
   }
 
   agregarSeparadorComa(num: number) {

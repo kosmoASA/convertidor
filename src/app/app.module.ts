@@ -17,12 +17,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NumberChangePipe } from './pipes/number-change.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     PrincipalComponent,
-    DialogComponent
+    DialogComponent,
+    NumberChangePipe
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatDialogModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
